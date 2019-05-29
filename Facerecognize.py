@@ -11,11 +11,16 @@ def training_dataset_and_labels():
     face_data=[]
     labels=[]
     count=0
+    value=[]
+    m=0
     subdir=os.listdir(dir_name)
-    dic={x: 0 for x in subdir}
+    dic={x:0 for x in subdir}
+    
     for i in subdir:
+        count=count+1
         folder_path=dir_name+str(i)
         images=os.listdir(folder_path)
+        
         for j in images:
             image_path=folder_path+"/"+j 
             face_values=cv2.imread(image_path,0)
@@ -24,16 +29,22 @@ def training_dataset_and_labels():
             for (x,y,w,h) in faces:
                 face_data.append(face_values[y:y+h,x:x+w])
                 part=j.split("_")[-2]
+                if part not in value:
+                    value.append(part)
                 labels.append(int(i))
-            for k in dic.keys():
-                part=j.split("_")[-2]
-                dic[k]=part
+    for k in dic.keys():
+        if m < count:
+            dic[k]=value[m]
+            m=m+1
+        
+        
+      
     np.save('trainingfaces',face_data)
     np.save('traininglabel',labels)
     #print(face_data)
     #print(dic)
+    #print(value)
     #print(labels)
     return face_data,labels,dic
-
 
 
