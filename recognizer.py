@@ -15,7 +15,9 @@ face_data,face_id,dic=fr.training_dataset_and_labels()
 #calling LBPH face recognizer
 recognizer=cv2.face.LBPHFaceRecognizer_create()
 recognizer.train(face_data,np.array(face_id))
-#face_recognizer=fr.train_classifier(face_data,face_id)
+#recognizer.save('trainingdata.yml')
+#recognizer.read('trainingdata.yml')
+#face_recognizer=f.train_classifier(face_data,face_id)
 while cap.isOpened():
     status,frame=cap.read()
     gray=cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
@@ -25,8 +27,8 @@ while cap.isOpened():
         value,confidence=recognizer.predict(gray[y:y+h,x:x+w])
         text=dic[str(value)]
         #print(value)
-        if confidence < 40:
-            cv2.putText(frame,text,(x,y),font,2,(255,0,0),4)
+        #if confidence < 40:
+        cv2.putText(frame,text,(x,y),font,2,(255,0,0),4)
         #print(confidence)
         #print(value)
     cv2.imshow("live",frame)
@@ -34,5 +36,4 @@ while cap.isOpened():
         break
 cv2.destroyAllWindows()
 cap.release()
-
 
